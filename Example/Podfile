@@ -3,6 +3,7 @@ use_frameworks!
 target 'Agent_Example' do
   pod 'Agent', :path => '../'
   pod 'AlgoliaSearch-Client-Swift', '~> 5.0'
+  pod 'Result'
 
   target 'Agent_Tests' do
     inherit! :search_paths
