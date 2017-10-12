@@ -23,3 +23,13 @@ public struct AlgoliaResponse<T: Decodable>: Decodable {
     let hitsPerPage: Int
     let nbHits: Int
 }
+
+public struct FacetValuesResponse: Decodable {
+    struct Content: Decodable {
+        let value: String
+        let highlighted: String
+        let count: Int
+    }
+
+    let facetHits: [Content]
+}

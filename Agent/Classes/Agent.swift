@@ -8,6 +8,8 @@
 import AlgoliaSearch
 import Result
 
+public typealias AgentQuery = Query
+
 public class Agent {
     public private(set) static var shared: Agent!
 
@@ -44,4 +46,36 @@ public class Agent {
             }
         }
     }
+
+    public func searchForFacetValues(request: FacetValuesRequestProtocol, completion: ((Result<FacetValuesResponse, AlgoliaResponseError>) -> Void)?) {
+        let index = client.index(withName: request.indexName)
+        if let query = request.query {
+            index.z_objc_searchForFacetValues(of: request.key, matching: request.keyword, query: query) { (json, error) in
+                if let error = error { print(error); return }
+                guard let json: JSONObject = json else { return }
+                do {
+                    let data = try JSONSerialization.data(withJSONObject: json, options: .prettyPrinted)
+                    print(String(data: data, encoding: .utf8)!)
+                    let response = try JSONDecoder().decode(FacetValuesResponse.self, from: data)
+                    completion?(.success(response))
+                } catch {
+                    completion?(.failure(.cannnotDecodeResponse))
+                }
+            }
+        } else {
+            index.searchForFacetValues(of: request.key, matching: request.keyword) { (json, error) in
+                if let error = error { print(error); return }
+                guard let json: JSONObject = json else { return }
+                do {
+                    let data = try JSONSerialization.data(withJSONObject: json, options: .prettyPrinted)
+                    print(String(data: data, encoding: .utf8)!)
+                    let response = try JSONDecoder().decode(FacetValuesResponse.self, from: data)
+                    completion?(.success(response))
+                } catch {
+                    completion?(.failure(.cannnotDecodeResponse))
+                }
+            }
+        }
+    }
+
 }
