@@ -8,6 +8,11 @@
 ## Example
 
 To run the example project, clone the repo, and run `pod install` from the Example directory first.
+Open `AppDelegate.swift` and set your AlgoliaSearch AppID and APIKey.
+
+```Swift
+Agent.initialize(appID: "YOUR_APP_ID", apiKey: "YOUR_API_KEY")
+```
 
 ## Requirements
 
